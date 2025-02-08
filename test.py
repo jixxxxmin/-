@@ -19,13 +19,15 @@ header = {
 
 request = urllib.request.Request(url=url, headers=header)
 response = urllib.request.urlopen(request)
-html = response.read()
+html = response.read().decode("utf-8")
 
-detected_encoding = chardet.detect(html)['encoding']
+print(html)
+
+'''detected_encoding = chardet.detect(html)['encoding']
 print(detected_encoding)
 html = html.decode(detected_encoding)
 
 
 with open('test.txt', 'w', encoding="utf-8") as File:
     
-    File.write(html)
+    File.write(html)'''
