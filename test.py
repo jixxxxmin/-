@@ -1,9 +1,12 @@
 import urllib.request, requests
 from bs4 import BeautifulSoup
 import chardet
+import json
 
 
-url1 = "https://linkareer.com/list/intern?filterBy_activityTypeID=5&filterBy_categoryIDs=111&filterBy_jobTypes=INTERN&filterBy_regionIDs=2&filterBy_regionIDs=9&filterBy_regionIDs=5&filterBy_status=OPEN&orderBy_direction=DESC&orderBy_field=RECENT&page=1"
+
+#url1 = "https://linkareer.com/list/intern?filterBy_activityTypeID=5&filterBy_categoryIDs=111&filterBy_jobTypes=INTERN&filterBy_regionIDs=2&filterBy_regionIDs=9&filterBy_regionIDs=5&filterBy_status=OPEN&orderBy_direction=DESC&orderBy_field=RECENT&page=1"
+url = "https://comic.naver.com/webtoon/detail?titleId=807029&no=87"
 header = {
     
                 'sec-ch-ua' :'"Not A(Brand";v="8", "Chromium";v="132", "Microsoft Edge";v="132"',
@@ -14,7 +17,7 @@ header = {
 }
 
 
-request = urllib.request.Request(url=url1, headers=header)
+request = urllib.request.Request(url=url, headers=header)
 response = urllib.request.urlopen(request)
 html = response.read()
 
