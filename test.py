@@ -1,33 +1,69 @@
-import urllib.request, requests
+import urllib.request
 from bs4 import BeautifulSoup
-import chardet
-import json
+import sqlite3
 
 
 
-#url1 = "https://linkareer.com/list/intern?filterBy_activityTypeID=5&filterBy_categoryIDs=111&filterBy_jobTypes=INTERN&filterBy_regionIDs=2&filterBy_regionIDs=9&filterBy_regionIDs=5&filterBy_status=OPEN&orderBy_direction=DESC&orderBy_field=RECENT&page=1"
-url = "https://comic.naver.com/webtoon/detail?titleId=807029&no=87"
+num = 807029
+no = 85
+
+
+url = f'https://comic.naver.com/webtoon/detail?titleId={str(num)}&no={str(no)}'
 header = {
-    
-                'sec-ch-ua' :'"Not A(Brand";v="8", "Chromium";v="132", "Microsoft Edge";v="132"',
-                'sec-ch-ua-mobile' : '?0',
-                'sec-ch-ua-platform' : '"Windows"',
-                'upgrade-insecure-requests': '1',
-                'user-agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0'
+            'user-agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0'
 }
 
 
-request = urllib.request.Request(url=url, headers=header)
-response = urllib.request.urlopen(request)
-html = response.read().decode("utf-8")
+def re():
+    
+    request = urllib.request.Request(url=url, headers=header)
+    response = urllib.request.urlopen(request)
+    soup = BeautifulSoup(response, 'html.parser')
+    
+    return soup
 
-print(html)
+def create_db():
+    
+    con = sqlite3.connect(f'{str(num)}.db')
+    cursor = con.cursor()
 
-'''detected_encoding = chardet.detect(html)['encoding']
-print(detected_encoding)
-html = html.decode(detected_encoding)
+    create_sql = f'''CREATE TABLE IF NOT EXISTS "{no}" (
+                        Num INT PRIMARY KEY,
+                        Link VARCHAR(100)
+                    );'''
+                    
+    cursor.execute(create_sql)
+    
+    con.commit()
+
+def link_save(soup):
+
+    con = sqlite3.connect(f'{str(num)}.db')
+    cursor = con.cursor()
+    
+    for tag in soup.find(class_='wt_viewer').find_all('img'):
+    
+        try:
+            
+            insert_sql = f'''INSERT INTO "{no}" (Num, Link) VALUES (?, ?);'''
+
+            link_num = tag['src'].split('_')[-1].split('.')[0]
+            cursor.execute(insert_sql, (link_num, tag['src']))
+        
+            con.commit()
+            
+        except:
+            
+            pass
 
 
+create_db()        
+soup = re()
+link_save(soup)
+
+
+'''
 with open('test.txt', 'w', encoding="utf-8") as File:
     
-    File.write(html)'''
+    File.write(html)
+'''
