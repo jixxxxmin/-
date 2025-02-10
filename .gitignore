@@ -3,3 +3,4 @@
 #제외
 *.db
 *.html
+*test.py

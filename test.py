@@ -5,12 +5,13 @@ import sqlite3
 
 
 num = 807029
-no = 85
+no = 86
 
 
 url = f'https://comic.naver.com/webtoon/detail?titleId={str(num)}&no={str(no)}'
 header = {
             'user-agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Edg/132.0.0.0'
+            
 }
 
 
