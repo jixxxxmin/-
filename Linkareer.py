@@ -42,4 +42,3 @@ while True:
     check = re(page_num)
     
     if check:   break
-    
