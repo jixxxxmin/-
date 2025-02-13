@@ -75,3 +75,4 @@ def each_id():
 
 id_num = each_id()
 print(id_num)
+#session 중복 허용
